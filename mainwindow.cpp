@@ -1,30 +1,34 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "executethread.h"
 #include <QFileDialog>
 #include <QMimeData>
 #include <QUrl>
 #include <QStandardPaths>
-#include <QDebug>
+#include <QDateTime>
+#include <QMessageBox>
 
+#include <QDebug>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    // 文件列表
     m_mFiles = new QStringListModel(this);
     ui->listFIles->setModel(m_mFiles);
     // 扩展名
     QStringList list;
     list << "" << "png" << "jpg" << "bmp" << "gif" << "svg";
     ui->comboExtension->addItems(list);
-    //倍率
+    // 倍率
     ui->boxRate_1_0->setChecked(true);
     ui->boxRate_1_5->setChecked(true);
     ui->boxRate_2_0->setChecked(true);
     ui->boxRate_3_0->setChecked(false);
     ui->boxRate_4_0->setChecked(false);
     ui->boxRate_5_0->setChecked(false);
-    //尺寸（1.0x）
+    // 尺寸（1.0x）
     m_gSize = new QButtonGroup(this);
     m_gSize->addButton(ui->radioSize_18_18);
     m_gSize->addButton(ui->radioSize_20_20);
@@ -33,19 +37,28 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->radioSize_20_20->setChecked(true);
     ui->editWidth->setText("20");
     ui->editHeight->setText("20");
-    //保持比例
+    // 保持比例
     m_gMatainAspect = new QButtonGroup(this);
     m_gMatainAspect->addButton(ui->radioMatainAspectYes);
     m_gMatainAspect->addButton(ui->radioMatainAspectNo);
     ui->radioMatainAspectYes->setChecked(true);
-//    qDebug()<<QCoreApplication::applicationDirPath();
-//    qDebug()<<QCoreApplication::applicationFilePath();
-//    qDebug()<<QDir::currentPath();
-//    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-//    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::DesktopLocation);
-//    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+    // statusBar 进度展示
+    m_pStatLabel = new QLabel(this);
+    m_pStatProgress = new QProgressBar(this);
+    m_pStatLabel->setStyleSheet("color:#999999;");
+    m_pStatLabel->setAlignment(Qt::AlignRight);
+    m_pStatLabel->setText("欢迎使用！");
+    m_pStatProgress->setTextVisible(true);
+    m_pStatProgress->setRange(0,100);
+    ui->statusBar->addPermanentWidget(m_pStatProgress,1);
+    ui->statusBar->addPermanentWidget(m_pStatLabel,1);
+    //    qDebug()<<QCoreApplication::applicationDirPath();
+    //    qDebug()<<QCoreApplication::applicationFilePath();
+    //    qDebug()<<QDir::currentPath();
+    //    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    //    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::DesktopLocation);
+    //    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
     m_sDefaultPath = QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[0];
-
 }
 
 MainWindow::~MainWindow()
@@ -62,6 +75,14 @@ MainWindow::~MainWindow()
         delete m_gMatainAspect;
         m_gMatainAspect = nullptr;
     }
+    if (m_pStatLabel) {
+        delete m_pStatLabel;
+        m_pStatLabel = nullptr;
+    }
+    if (m_pStatProgress) {
+        delete m_pStatProgress;
+        m_pStatProgress = nullptr;
+    }
     delete ui;
 }
 
@@ -69,10 +90,10 @@ void MainWindow::on_btnFiles_clicked()
 {
 
     QStringList files = QFileDialog::getOpenFileNames(
-                            this,
-                            "选择一个或多个文件",
-                            m_sDefaultPath,
-                            "Images (*.png *.jpg *.bmp *.gif *.svg)");
+                this,
+                "选择一个或多个文件",
+                m_sDefaultPath,
+                "Images (*.png *.jpg *.bmp *.gif *.svg)");
     foreach (QString f, files) {
         m_sFiles.insert(f);
     }
@@ -93,7 +114,6 @@ void MainWindow::on_btnClear_clicked()
 
 void MainWindow::on_commandLinkButton_clicked()
 {
-
     // 前缀
     QString prefix = ui->editPrefix->text();
     // 后缀
@@ -134,6 +154,21 @@ void MainWindow::on_commandLinkButton_clicked()
         maintainAspect = "!";
     }
 
+    if(m_sFiles.size() == 0 || listRates.size() == 0)
+        return;
+
+    m_iAll = m_sFiles.size() * listRates.size();
+    m_iCur = 0;
+    m_iSuc = 0;
+    //重置显示信息
+    m_pStatProgress->setValue(0);
+    m_pStatLabel->setText("共："+QString("%1").arg(m_iAll));
+    m_pStatLabel->repaint();
+    // 清空错误信息
+    m_pError.clear();
+
+    // 禁用执行按钮
+    ui->commandLinkButton->setEnabled(false);
     // 执行
     foreach (QString f, m_sFiles) {
         // 存储路径
@@ -171,9 +206,10 @@ void MainWindow::on_commandLinkButton_clicked()
                     rate = "@5.0x";
                 }
                 //注意：如果传入的宽高是小数，会四舍五入
-                QString cmd = "/usr/local/bin/convert -resize " + w + "x" + h + maintainAspect + " " + f + " " + path + "/" + prefix + name + suffix + rate + "." + (extension.isEmpty() ? ext : extension);
-                qDebug() << cmd;
-                system(cmd.toUtf8().data());
+                QString cmd = "/usr/local/bin/convert -resize " + w + "x" + h + maintainAspect + " \"" + f + "\" \"" + path + "/" + prefix + name + suffix + rate + "." + (extension.isEmpty() ? ext : extension) + "\"";
+                ExecuteThread *mThread = new ExecuteThread(cmd);
+                connect(mThread,SIGNAL(finish(QString,int)),this,SLOT(onFinish(QString,int)));
+                mThread->start();
             }
         }
     }
@@ -184,7 +220,6 @@ void MainWindow::on_commandLinkButton_clicked()
 void MainWindow::on_radioSize_18_18_clicked(bool checked)
 {
     if (checked) {
-        qDebug() << checked;
         ui->editWidth->setText("18");
         ui->editHeight->setText("18");
         ui->editWidth->repaint();
@@ -225,9 +260,9 @@ void MainWindow::on_radioSize_40_40_clicked(bool checked)
 void MainWindow::on_btnPath_clicked()
 {
     m_sPath = QFileDialog::getExistingDirectory(
-                  this,
-                  "选择存储路径",
-                  m_sDefaultPath);
+                this,
+                "选择存储路径",
+                m_sDefaultPath);
     ui->editPath->setText(m_sPath);
     ui->editPath->repaint();
 }
@@ -236,7 +271,7 @@ void MainWindow::on_btnPath_clicked()
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     //如果为文件，则支持拖放
-    qDebug() << event->mimeData()->formats();
+    //    qDebug() << event->mimeData()->formats();
     if (event->mimeData()->hasFormat("text/uri-list"))
         event->acceptProposedAction();
 }
@@ -247,7 +282,6 @@ void MainWindow::dropEvent(QDropEvent *event)
     //注意：这里如果有多文件存在，意思是用户一下子拖动了多个文件，而不是拖动一个目录
     //如果想读取整个目录，则在不同的操作平台下，自己编写函数实现读取整个目录文件名
     QList<QUrl> urls = event->mimeData()->urls();
-    qDebug() << event->mimeData()->hasImage();
     if (urls.isEmpty())
         return;
 
@@ -263,4 +297,36 @@ void MainWindow::dropEvent(QDropEvent *event)
             m_mFiles->setStringList(m_sFiles.toList());
         }
     }
+}
+
+void MainWindow::onFinish(QString cmd, int ret)
+{
+    m_iCur++;
+    if(ret==0){
+        m_iSuc++;
+    }else{
+        //errors<<cmd;
+        m_pError<<cmd+" "+QString::number(ret);
+    }
+    QDateTime time = QDateTime::currentDateTime();
+    QString str = time.toString("yyyy-MM-dd hh:mm:ss ddd");
+    qDebug()<<str<<ret<<cmd<<m_iCur*100/m_iAll<<"%";
+
+    m_pStatProgress->setValue(m_iCur*100/m_iAll);
+    m_pStatProgress->repaint();
+    m_pStatLabel->setText("共："+QString("%1").arg(m_iAll)+"  成功："+QString("%1").arg(m_iSuc)+"  失败："+QString("%1").arg(m_iCur-m_iSuc));
+    m_pStatLabel->repaint();
+    if(m_iCur == m_iAll){
+        ui->commandLinkButton->setEnabled(true);
+        if(m_pError.size()>0)
+            showInfo();
+    }
+}
+
+void MainWindow::showInfo()
+{
+    QMessageBox msgBox;
+    msgBox.setInformativeText(m_pError.join("\n\n"));
+    msgBox.setText("失败项");
+    msgBox.exec();
 }

@@ -7,6 +7,9 @@
 #include <QButtonGroup>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QLabel>
+#include <QProgressBar>
+
 namespace Ui {
 class MainWindow;
 }
@@ -18,6 +21,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void showInfo();
 
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -41,14 +45,22 @@ private slots:
 
     void on_btnPath_clicked();
 
+    void onFinish(QString cmd,int ret);
 private:
     Ui::MainWindow *ui;
     QStringListModel *m_mFiles;
+    QStringList m_pError;
     QButtonGroup *m_gSize;
     QButtonGroup *m_gMatainAspect;
     QSet<QString> m_sFiles;
     QString m_sPath;
     QString m_sDefaultPath;
+    QLabel *m_pStatLabel;
+    QProgressBar *m_pStatProgress;
+
+    int m_iAll;//任务总数
+    int m_iSuc;//当前成功的数量
+    int m_iCur;//当前执行完数量
 };
 
 #endif // MAINWINDOW_H

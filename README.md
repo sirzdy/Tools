@@ -1,9 +1,8 @@
-## 基于 Qt 的图片尺寸转换工具
+## 基于 Qt ImageMagick 的图片尺寸转换工具
 
-
-![效果图](http://upload-images.jianshu.io/upload_images/606686-fa4cee68d06828b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![效果图](http://orvm1p4c8.bkt.clouddn.com/o_1c21cchhg13j9rhj24513m71s7k9.png?)
     
-本质是辅以图形界面使用imagemagick实现。
+本质是辅以 Qt 图形界面，使用 ImageMagick 实现。
 
 ### 背景
 
