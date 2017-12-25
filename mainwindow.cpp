@@ -205,8 +205,31 @@ void MainWindow::on_commandLinkButton_clicked()
                 if (i == 5.0) {
                     rate = "@5.0x";
                 }
-                //注意：如果传入的宽高是小数，会四舍五入
-                QString cmd = "/usr/local/bin/convert -resize " + w + "x" + h + maintainAspect + " \"" + f + "\" \"" + path + "/" + prefix + name + suffix + rate + "." + (extension.isEmpty() ? ext : extension) + "\"";
+                QString command;
+#ifdef Q_OS_MAC
+
+// mac
+                command="/usr/local/bin/convert";
+
+#endif
+
+
+#ifdef Q_OS_LINUX
+
+// linux
+                command="/usr/local/bin/convert";
+
+#endif
+
+
+#ifdef Q_OS_WIN32
+
+// win
+                command="cd C:\Program Files\ImageMagick-7.0.7-Q16 & magick.exe";
+
+#endif
+                //注意：如果传入的宽高是小数，会四舍五入"/usr/local/bin/convert"
+                QString cmd = command+" \"" + f + "\""+" -resize " + w + "x" + h + maintainAspect +" \""+path + "/" + prefix + name + suffix + rate + "." + (extension.isEmpty() ? ext : extension) + "\"";
                 ExecuteThread *mThread = new ExecuteThread(cmd);
                 connect(mThread,SIGNAL(finish(QString,int)),this,SLOT(onFinish(QString,int)));
                 mThread->start();
