@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::DesktopLocation);
     //    qDebug()<<QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
     m_sDefaultPath = QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[0];
+
 }
 
 MainWindow::~MainWindow()
@@ -172,7 +173,7 @@ void MainWindow::on_commandLinkButton_clicked()
     // 执行
     foreach (QString f, m_sFiles) {
         // 存储路径
-        QString path = m_sPath.isEmpty() ? f.left(f.lastIndexOf("/")) : m_sPath;
+        QString path;
         // 文件名（含扩展名）
         QString fullname = f.right(f.size() - f.lastIndexOf("/") - 1);
         // 文件名（不含扩展名）
@@ -187,28 +188,41 @@ void MainWindow::on_commandLinkButton_clicked()
                 QString w = QString("%1").arg(fw * i);
                 QString h = QString("%1").arg(fh * i);
                 QString rate;
+                QString strPath;
                 if (i == 1.0) {
                     rate = "@1.0x";
+                    strPath = ui->editPath_1_0->text();
                 }
                 if (i == 1.5) {
                     rate = "@1.5x";
+                    strPath = ui->editPath_1_5->text();
                 }
                 if (i == 2.0) {
                     rate = "@2.0x";
+                    strPath = ui->editPath_2_0->text();
                 }
                 if (i == 3.0) {
                     rate = "@3.0x";
+                    strPath = ui->editPath_3_0->text();
                 }
                 if (i == 4.0) {
                     rate = "@4.0x";
+                    strPath = ui->editPath_4_0->text();
                 }
                 if (i == 5.0) {
                     rate = "@5.0x";
+                    strPath = ui->editPath_5_0->text();
+                }
+                if(strPath.isEmpty() ){
+                    path = f.left(f.lastIndexOf("/"));
+                }else{
+                    rate = "";
+                    path = strPath;
                 }
                 QString command;
 #ifdef Q_OS_MAC
 
-// mac
+                // mac
                 command="/usr/local/bin/convert";
 
 #endif
@@ -216,7 +230,7 @@ void MainWindow::on_commandLinkButton_clicked()
 
 #ifdef Q_OS_LINUX
 
-// linux
+                // linux
                 command="/usr/local/bin/convert";
 
 #endif
@@ -224,7 +238,7 @@ void MainWindow::on_commandLinkButton_clicked()
 
 #ifdef Q_OS_WIN32
 
-// win
+                // win
                 command="cd C:\Program Files\ImageMagick-7.0.7-Q16 & magick.exe";
 
 #endif
@@ -280,15 +294,6 @@ void MainWindow::on_radioSize_40_40_clicked(bool checked)
     }
 }
 
-void MainWindow::on_btnPath_clicked()
-{
-    m_sPath = QFileDialog::getExistingDirectory(
-                this,
-                "选择存储路径",
-                m_sDefaultPath);
-    ui->editPath->setText(m_sPath);
-    ui->editPath->repaint();
-}
 
 //当用户拖动文件到窗口部件上时候，就会触发dragEnterEvent事件
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -352,4 +357,64 @@ void MainWindow::showInfo()
     msgBox.setInformativeText(m_pError.join("\n\n"));
     msgBox.setText("失败项");
     msgBox.exec();
+}
+
+void MainWindow::on_btnPath_1_0_clicked()
+{
+    QString strPath = QFileDialog::getExistingDirectory(
+                this,
+                "选择存储路径",
+                m_sDefaultPath);
+    ui->editPath_1_0->setText(strPath);
+    ui->editPath_1_0->repaint();
+}
+
+void MainWindow::on_btnPath_1_5_clicked()
+{
+    QString strPath = QFileDialog::getExistingDirectory(
+                this,
+                "选择存储路径",
+                m_sDefaultPath);
+    ui->editPath_1_5->setText(strPath);
+    ui->editPath_1_5->repaint();
+}
+
+void MainWindow::on_btnPath_2_0_clicked()
+{
+    QString strPath = QFileDialog::getExistingDirectory(
+                this,
+                "选择存储路径",
+                m_sDefaultPath);
+    ui->editPath_2_0->setText(strPath);
+    ui->editPath_2_0->repaint();
+}
+
+void MainWindow::on_btnPath_3_0_clicked()
+{
+    QString strPath = QFileDialog::getExistingDirectory(
+                this,
+                "选择存储路径",
+                m_sDefaultPath);
+    ui->editPath_3_0->setText(strPath);
+    ui->editPath_3_0->repaint();
+}
+
+void MainWindow::on_btnPath_4_0_clicked()
+{
+    QString strPath = QFileDialog::getExistingDirectory(
+                this,
+                "选择存储路径",
+                m_sDefaultPath);
+    ui->editPath_4_0->setText(strPath);
+    ui->editPath_4_0->repaint();
+}
+
+void MainWindow::on_btnPath_5_0_clicked()
+{
+    QString strPath = QFileDialog::getExistingDirectory(
+                this,
+                "选择存储路径",
+                m_sDefaultPath);
+    ui->editPath_5_0->setText(strPath);
+    ui->editPath_5_0->repaint();
 }

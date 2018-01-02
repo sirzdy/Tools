@@ -43,9 +43,21 @@ private slots:
 
     void on_btnClear_clicked();
 
-    void on_btnPath_clicked();
-
     void onFinish(QString cmd,int ret);
+
+
+    void on_btnPath_1_0_clicked();
+
+    void on_btnPath_1_5_clicked();
+
+    void on_btnPath_2_0_clicked();
+
+    void on_btnPath_3_0_clicked();
+
+    void on_btnPath_4_0_clicked();
+
+    void on_btnPath_5_0_clicked();
+
 private:
     Ui::MainWindow *ui;
     QStringListModel *m_mFiles;
@@ -53,7 +65,7 @@ private:
     QButtonGroup *m_gSize;
     QButtonGroup *m_gMatainAspect;
     QSet<QString> m_sFiles;
-    QString m_sPath;
+//    QString m_sPath;
     QString m_sDefaultPath;
     QLabel *m_pStatLabel;
     QProgressBar *m_pStatProgress;

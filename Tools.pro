@@ -39,3 +39,4 @@ RESOURCES += \
     res.qrc
 
 ICON = app.icns
+RC_ICONS = app.ico

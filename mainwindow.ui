@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>436</width>
-    <height>649</height>
+    <height>735</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -98,66 +98,6 @@
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <widget class="QGroupBox" name="groupBox_4">
-        <property name="minimumSize">
-         <size>
-          <width>180</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>180</width>
-          <height>80</height>
-         </size>
-        </property>
-        <property name="title">
-         <string>目标文件夹</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <widget class="QLineEdit" name="editPath">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="placeholderText">
-              <string>图片所在路径</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="btnPath">
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonIconOnly</enum>
-             </property>
-             <property name="autoRaise">
-              <bool>false</bool>
-             </property>
-             <property name="arrowType">
-              <enum>Qt::NoArrow</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
       <item>
        <widget class="QGroupBox" name="groupBox_3">
         <property name="minimumSize">
@@ -278,90 +218,280 @@
          </size>
         </property>
         <property name="title">
-         <string>倍率</string>
+         <string>倍率与目标文件夹</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
             <widget class="QCheckBox" name="boxRate_1_0">
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>16777215</height>
-              </size>
-             </property>
              <property name="text">
               <string>1.0x</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="boxRate_1_5">
+            <widget class="QToolButton" name="btnPath_1_0">
              <property name="maximumSize">
               <size>
-               <width>50</width>
+               <width>40</width>
                <height>16777215</height>
               </size>
              </property>
              <property name="text">
-              <string>1.5x</string>
+              <string>...</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="boxRate_2_0">
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>16777215</height>
-              </size>
+            <widget class="QLineEdit" name="editPath_1_0">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
-             <property name="text">
-              <string>2.0x</string>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>目标路径</string>
              </property>
             </widget>
            </item>
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
-            <widget class="QCheckBox" name="boxRate_3_0">
+            <widget class="QCheckBox" name="boxRate_1_5">
+             <property name="text">
+              <string>1.5x</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="btnPath_1_5">
              <property name="maximumSize">
               <size>
-               <width>50</width>
+               <width>40</width>
                <height>16777215</height>
               </size>
              </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPath_1_5">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>目标路径</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QCheckBox" name="boxRate_2_0">
+             <property name="text">
+              <string>2.0x</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="btnPath_2_0">
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPath_2_0">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>目标路径</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_14">
+           <item>
+            <widget class="QCheckBox" name="boxRate_3_0">
              <property name="text">
               <string>3.0x</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="boxRate_4_0">
+            <widget class="QToolButton" name="btnPath_3_0">
              <property name="maximumSize">
               <size>
-               <width>50</width>
+               <width>40</width>
                <height>16777215</height>
               </size>
              </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPath_3_0">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>目标路径</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_15">
+           <item>
+            <widget class="QCheckBox" name="boxRate_4_0">
              <property name="text">
               <string>4.0x</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="boxRate_5_0">
+            <widget class="QToolButton" name="btnPath_4_0">
              <property name="maximumSize">
               <size>
-               <width>50</width>
+               <width>40</width>
                <height>16777215</height>
               </size>
              </property>
              <property name="text">
+              <string>...</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPath_4_0">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>目标路径</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_16">
+           <item>
+            <widget class="QCheckBox" name="boxRate_5_0">
+             <property name="text">
               <string>5.0x</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="btnPath_5_0">
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="editPath_5_0">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>目标路径</string>
              </property>
             </widget>
            </item>
@@ -625,17 +755,17 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>436</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionPicture">
+   <property name="text">
+    <string>image</string>
+   </property>
+  </action>
+  <action name="actionxml_Tool">
+   <property name="text">
+    <string>xml</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
