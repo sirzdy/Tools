@@ -1,6 +1,6 @@
 ## 基于 Qt ImageMagick 的图片尺寸转换工具
 
-![效果图](http://orvm1p4c8.bkt.clouddn.com/o_1c21cchhg13j9rhj24513m71s7k9.png?)
+![效果图](http://orvm1p4c8.bkt.clouddn.com/o_1c2r4gld68pn1u524regut14d89.png)
     
 本质是辅以 Qt 图形界面，使用 ImageMagick 实现。
 
