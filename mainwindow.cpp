@@ -213,7 +213,7 @@ void MainWindow::on_commandLinkButton_clicked()
                     rate = "@5.0x";
                     strPath = ui->editPath_5_0->text();
                 }
-                if(strPath.isEmpty() ){
+                if(strPath.isEmpty()){
                     path = f.left(f.lastIndexOf("/"));
                 }else{
                     rate = "";
